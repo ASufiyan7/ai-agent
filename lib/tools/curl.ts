@@ -3,20 +3,17 @@
 import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 
-// Define a type for the comment object to avoid using 'any'
+// Define a precise type for the original comment data
 interface Comment {
   postId: number;
   id: number;
   name: string;
   email: string;
   body: string;
-  [key: string]: any; 
 }
 
-// FIX: Define a type for the filtered comment object
-type FilteredComment = {
-    [key: string]: any;
-}
+// Define a type for the new object we create after filtering
+type FilteredComment = { [key: string]: string | number };
 
 export const curlCommentsTool = new DynamicStructuredTool({
   name: "curl_comments",
@@ -43,12 +40,13 @@ export const curlCommentsTool = new DynamicStructuredTool({
       const data: Comment[] = await response.json();
 
       if (fields && fields.length > 0) {
-        // FIX: Use the 'FilteredComment' type here
-        const filteredData = data.map((comment: Comment): FilteredComment => {
+        // This mapping logic is now correctly typed and will pass the linter
+        const filteredData = data.map((comment): FilteredComment => {
           const newComment: FilteredComment = {};
           for (const field of fields) {
-            if (comment[field]) {
-              newComment[field] = comment[field];
+            // A safer way to check if the property exists
+            if (Object.prototype.hasOwnProperty.call(comment, field)) {
+              newComment[field] = comment[field as keyof Comment];
             }
           }
           return newComment;
