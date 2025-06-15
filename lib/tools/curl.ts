@@ -1,13 +1,22 @@
-// tools/curl.ts
+// lib/tools/curl.ts
 
 import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
+
+// Define a type for the comment object to avoid using 'any'
+interface Comment {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+  [key: string]: any; 
+}
 
 export const curlCommentsTool = new DynamicStructuredTool({
   name: "curl_comments",
   description:
     "Fetch sample comments from the JSONPlaceholder API. Can optionally return only specific fields.",
-  // FIX: The schema now accepts an optional 'fields' array.
   schema: z.object({
     fields: z
       .array(z.string())
@@ -26,11 +35,11 @@ export const curlCommentsTool = new DynamicStructuredTool({
         return `Error: Received status ${response.status} from JSONPlaceholder API.`;
       }
 
-      let data = await response.json();
+      const data: Comment[] = await response.json();
 
-      // FIX: If the 'fields' argument is provided, process the data.
+      // FIX: If fields are requested, map to a new variable instead of reassigning.
       if (fields && fields.length > 0) {
-        data = data.map((comment: any) => {
+        const filteredData = data.map((comment: Comment) => {
           const newComment: { [key: string]: any } = {};
           for (const field of fields) {
             if (comment[field]) {
@@ -39,8 +48,11 @@ export const curlCommentsTool = new DynamicStructuredTool({
           }
           return newComment;
         });
+        // Return the new, filtered data
+        return JSON.stringify(filteredData, null, 2);
       }
 
+      // If no fields are requested, return the original data
       return JSON.stringify(data, null, 2);
     } catch (error) {
       console.error(`Error fetching comments: ${error}`);

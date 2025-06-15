@@ -1,19 +1,28 @@
-// tools/google_books.ts
+// lib/tools/google_books.ts
 
 import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 
-// Define the schema for the tool's input.
+// FIX: Define a type for the book item to avoid using 'any'
+interface GoogleBookItem {
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors?: string[];
+    publishedDate?: string;
+    description?: string;
+  };
+}
+
 const googleBooksSchema = z.object({
   q: z.string().describe("The search query for books."),
   maxResults: z
     .number()
     .optional()
-    .default(3) // FIX: Reduced from 5 to 3 to lower token usage.
+    .default(3)
     .describe("The maximum number of results to return."),
 });
 
-// Create the tool using DynamicStructuredTool.
 export const googleBooksTool = new DynamicStructuredTool({
   name: "google_books",
   description: "Search for books using the Google Books API.",
@@ -35,12 +44,11 @@ export const googleBooksTool = new DynamicStructuredTool({
         return `No books found for query: "${q}"`;
       }
 
-      // Format the results to be more concise
-      const results = data.items.map((item: any) => ({
+      // FIX: Use the 'GoogleBookItem' type here
+      const results = data.items.map((item: GoogleBookItem) => ({
         title: item.volumeInfo.title,
         authors: item.volumeInfo.authors || ["N/A"],
         publishedDate: item.volumeInfo.publishedDate || "N/A",
-        // FIX: Shortened description from 200 to 100 characters.
         description: item.volumeInfo.description
           ? item.volumeInfo.description.substring(0, 100) + "..."
           : "No description available.",

@@ -3,7 +3,7 @@
 import {
   AIMessage,
   BaseMessage,
-  HumanMessage,
+  // HumanMessage, <-- This line is removed as it was unused
   SystemMessage,
   trimMessages,
 } from "@langchain/core/messages";
@@ -33,9 +33,8 @@ import { jsonataTool } from "./tools/jsonata";
 
 let graph: Runnable | null = null;
 
-// --- FINAL FIX: Aggressive message trimming for production resilience ---
 const trimmer = trimMessages({
-  maxTokens: 4000, // Reduced to leave a large buffer for the model's response
+  maxTokens: 4000, 
   strategy: "last",
   tokenCounter: (messages) =>
     messages.reduce((acc, msg) => acc + (msg.content as string).length, 0) / 4,
@@ -68,7 +67,7 @@ export async function getLangGraph(): Promise<Runnable> {
     model: "llama3-8b-8192",
     apiKey: process.env.GROQ_API_KEY,
     temperature: 0.7,
-    maxTokens: 4096, // Max tokens for the *output*
+    maxTokens: 4096,
     streaming: true,
   }).bindTools(allTools);
 
