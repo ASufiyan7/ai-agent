@@ -12,14 +12,14 @@ export default function LandingPage() {
         {/* Hero content */}
         <header className="space-y-6">
           <h1 className="text-5xl font-bold tracking-tight sm:text-7xl bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-            AI Agent Assistant
+            AI Agent
           </h1>
           <p className="max-w-[600px] text-lg text-gray-600 md:text-xl/relaxed xl:text-2xl/relaxed">
             Meet your new AI chat companion that goes beyond conversation - it
             can actually get things done!
             <br />
             <span className="text-gray-400 text-sm">
-              Powered by IBM&apos;s WxTools & your favourite LLM&apos;s.
+              Powered by IBM&apos;s WxTools & LLM&apos;s.
             </span>
           </p>
         </header>
@@ -57,7 +57,7 @@ export default function LandingPage() {
               title: "Modern",
               description: "Next.js 15, Tailwind CSS, Convex, Clerk",
             },
-            { title: "Smart", description: "Powered by Your Favourite LLM's" },
+            { title: "Smart", description: "Powered by LLM's" },
           ].map(({ title, description }) => (
             <div key={title} className="text-center">
               <div className="text-2xl font-semibold text-gray-900">
