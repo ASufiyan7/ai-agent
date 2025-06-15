@@ -13,6 +13,11 @@ interface Comment {
   [key: string]: any; 
 }
 
+// FIX: Define a type for the filtered comment object
+type FilteredComment = {
+    [key: string]: any;
+}
+
 export const curlCommentsTool = new DynamicStructuredTool({
   name: "curl_comments",
   description:
@@ -37,10 +42,10 @@ export const curlCommentsTool = new DynamicStructuredTool({
 
       const data: Comment[] = await response.json();
 
-      // FIX: If fields are requested, map to a new variable instead of reassigning.
       if (fields && fields.length > 0) {
-        const filteredData = data.map((comment: Comment) => {
-          const newComment: { [key: string]: any } = {};
+        // FIX: Use the 'FilteredComment' type here
+        const filteredData = data.map((comment: Comment): FilteredComment => {
+          const newComment: FilteredComment = {};
           for (const field of fields) {
             if (comment[field]) {
               newComment[field] = comment[field];
@@ -48,11 +53,9 @@ export const curlCommentsTool = new DynamicStructuredTool({
           }
           return newComment;
         });
-        // Return the new, filtered data
         return JSON.stringify(filteredData, null, 2);
       }
 
-      // If no fields are requested, return the original data
       return JSON.stringify(data, null, 2);
     } catch (error) {
       console.error(`Error fetching comments: ${error}`);
