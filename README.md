@@ -25,20 +25,3 @@ This project is built with a modern, full-stack, serverless architecture.
 ![Groq](https://img.shields.io/badge/Groq-00C2FF?style=for-the-badge&logo=groq&logoColor=white)
 ![Clerk](https://img.shields.io/badge/Clerk-6C47FF?style=for-the-badge&logo=clerk&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
-
----
-
-## 🔧 Getting Started
-
-To get a copy of this project up and running on your local machine, follow these steps.
-
-### Prerequisites
-
-* Node.js (v18 or later)
-* An account with [Clerk](https://clerk.com/), [Convex](https://convex.dev/), and [Groq](https://groq.com/) to get your API keys.
-
-### 1. Clone the Repository
-
-```bash
-git clone [https://github.com/your-username/ai-agent-chat-application.git](https://github.com/your-username/ai-agent-chat-application.git)
-cd ai-agent-chat-application
