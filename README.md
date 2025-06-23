@@ -1,10 +1,6 @@
 # 🤖 AI Agent Chat Application
 
 A sophisticated, full-stack AI chat agent that can think, use tools, and hold intelligent, real-time conversations. This isn't just a chatbot; it's a reasoning engine with access to the real world.
-
-![AI Agent Demo GIF](https://your-image-host.com/ai-agent-demo.gif)
-*<-- Strongly recommend replacing this with a GIF of your app in action! Show a question, the tool usage, and the final answer. -->*
-
 ---
 
 ## ✨ Core Features
